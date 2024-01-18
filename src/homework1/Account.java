@@ -10,6 +10,9 @@ public class Account {
     private double balance;
     private String gender;
 
+    public Account() {
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -67,41 +70,84 @@ public class Account {
         this.gender = gender;
     }
 
-    public static class Builder{
+    public static class Builder {
 
-        private final String firstName;
-        private final String lastName;
-        private String country;
-        private LocalDate birthday;
-        private double balance;
-        private String gender;
+//        private final String firstName;
+//        private String lastName;
+//        private String country;
+//        private LocalDate birthday;
+//        private double balance;
+//        private String gender;
+//
+//        public Builder(String firstName){
+//            this.firstName = firstName;
+//        }
+//
+//        public Builder lastName(String lastName){
+//            this.lastName = lastName;
+//            return this;
+//        }
+//
+//        public Builder country(String country){
+//            this.country = country;
+//            return this;
+//        }
+//
+//        public Builder birthday(LocalDate birthday){
+//            this.birthday = birthday;
+//            return this;
+//        }
+//
+//        public Builder balance(double balance){
+//            this.balance = balance;
+//            return this;
+//        }
+//        public Builder gender(String gender){
+//            this.gender = gender;
+//            return this;
+//        }
+//
+//        public Account build(){
+//            return new Account(firstName, lastName, country, birthday, balance, gender);
+//        }
 
-        public Builder(String firstName, String lastName) {
-            this.firstName = firstName;
-            this.lastName = lastName;
+        private final Account account = new Account();
+
+        public Builder() {
         }
 
-        public Builder country(String country){
-            this.country = country;
+        public Builder firstName(String firstName) {
+            account.firstName = firstName;
             return this;
         }
 
-        public Builder birthday(LocalDate birthday){
-            this.birthday = birthday;
+        public Builder lastName(String lastName) {
+            account.lastName = lastName;
             return this;
         }
 
-        public Builder balance(double balance){
-            this.balance = balance;
-            return this;
-        }
-        public Builder gender(String gender){
-            this.gender = gender;
+        public Builder country(String country) {
+            account.country = country;
             return this;
         }
 
-        public Account build(){
-            return new Account(firstName, lastName, country, birthday, balance, gender);
+        public Builder birthday(LocalDate birthday) {
+            account.birthday = birthday;
+            return this;
+        }
+
+        public Builder balance(double balance) {
+            account.balance = balance;
+            return this;
+        }
+
+        public Builder gender(String gender) {
+            account.gender = gender;
+            return this;
+        }
+
+        public Account build() {
+            return account;
         }
     }
 
