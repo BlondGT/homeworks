@@ -67,6 +67,44 @@ public class Account {
         this.gender = gender;
     }
 
+    public static class Builder{
+
+        private final String firstName;
+        private final String lastName;
+        private String country;
+        private LocalDate birthday;
+        private double balance;
+        private String gender;
+
+        public Builder(String firstName, String lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        public Builder country(String country){
+            this.country = country;
+            return this;
+        }
+
+        public Builder birthday(LocalDate birthday){
+            this.birthday = birthday;
+            return this;
+        }
+
+        public Builder balance(double balance){
+            this.balance = balance;
+            return this;
+        }
+        public Builder gender(String gender){
+            this.gender = gender;
+            return this;
+        }
+
+        public Account build(){
+            return new Account(firstName, lastName, country, birthday, balance, gender);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
