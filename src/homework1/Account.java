@@ -67,28 +67,72 @@ public class Account {
         this.gender = gender;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Account account = (Account) o;
-        return Double.compare(account.balance, balance) == 0 && firstName.equals(account.firstName) && lastName.equals(account.lastName) && country.equals(account.country) && birthday.equals(account.birthday) && gender.equals(account.gender);
-    }
+    public static class Builder {
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, country, birthday, balance, gender);
-    }
+        private String firstName;
+        private String lastName;
+        private String country;
+        private LocalDate birthday;
+        private double balance;
+        private String gender;
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", country='" + country + '\'' +
-                ", birthday=" + birthday +
-                ", balance=" + balance +
-                ", gender='" + gender + '\'' +
-                '}';
+        public Builder firstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder country(String country) {
+            this.country = country;
+            return this;
+        }
+
+        public Builder birthday(LocalDate birthday) {
+            this.birthday = birthday;
+            return this;
+        }
+
+        public Builder balance(double balance) {
+            this.balance = balance;
+            return this;
+        }
+
+        public Builder gender(String gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public Account build() {
+            return new Account(firstName, lastName, country, birthday, balance, gender);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Account account = (Account) o;
+            return Double.compare(account.balance, balance) == 0 && firstName.equals(account.firstName) && lastName.equals(account.lastName) && country.equals(account.country) && birthday.equals(account.birthday) && gender.equals(account.gender);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(firstName, lastName, country, birthday, balance, gender);
+        }
+
+        @Override
+        public String toString() {
+            return "Account{" +
+                    "firstName='" + firstName + '\'' +
+                    ", lastName='" + lastName + '\'' +
+                    ", country='" + country + '\'' +
+                    ", birthday=" + birthday +
+                    ", balance=" + balance +
+                    ", gender='" + gender + '\'' +
+                    '}';
+        }
     }
 }
