@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 public class AccountService {
 
-    public List<Account> over500Balance (List<Account> accounts){
+    public List<Account> over500Balance (List<Account> accounts, double amount){
         return accounts.stream()
-                .filter(account -> account.getBalance() >= 500)
+                .filter(account -> account.getBalance() >= amount)
                 .toList();
     }
     public Set<String> listCountries(List<Account> accounts) {
@@ -20,14 +20,14 @@ public class AccountService {
                 .collect(Collectors.toSet());
     }
 
-    public boolean youngerThan2000Year(List<Account> accounts){
+    public boolean youngerThan2000Year(List<Account> accounts, int year){
         return accounts.stream()
-                .allMatch(account -> account.getBirthday().getYear() < 2000);
+                .allMatch(account -> account.getBirthday().getYear() < year);
     }
 
-    public double sumAllMaleBalance(List<Account> accounts){
+    public double sumAllMaleBalance(List<Account> accounts, String gender){
         return accounts.stream()
-                .filter(account -> account.getGender().equals("Male"))
+                .filter(account -> account.getGender().equals(gender))
                 .map(Account::getBalance)
                 .reduce( 0.0, Double::sum);
     }
