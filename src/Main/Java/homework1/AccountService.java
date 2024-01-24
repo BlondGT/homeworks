@@ -1,3 +1,6 @@
+package homework1;
+
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.util.Comparator;
@@ -22,7 +25,7 @@ public class AccountService {
 
     public boolean youngerThanCertainYear(List<Account> accounts, int year){
         return accounts.stream()
-                .allMatch(account -> account.getBirthday().getYear() < year);
+                .anyMatch(account -> account.getBirthday().isAfter(LocalDate.of(year, 1,1)));
     }
 
     public double sumBalanceBeGender(List<Account> accounts, String gender){
@@ -60,10 +63,10 @@ public class AccountService {
 
     public Optional<Account> oldestAccount(List<Account> accounts){
         return accounts.stream()
-                .max(Comparator.comparing(Account::getBirthday));
+                .min(Comparator.comparing(Account::getBirthday));
     }
 
-    public Map<Year, Double> sortingByPlaceAndBalance(List<Account> accounts){
+    public Map<Year, Double> sortingByYearBirthdayAndBalance(List<Account> accounts){
         return accounts.stream()
                 .collect(Collectors.groupingBy(account -> Year.of(account.getBirthday().getYear()),
                         Collectors.averagingDouble(Account::getBalance)));
