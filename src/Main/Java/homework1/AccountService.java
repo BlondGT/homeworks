@@ -12,7 +12,14 @@ import java.util.stream.Collectors;
 
 public class AccountService {
 
-    public List<Account> overCertainBalance (List<Account> accounts, double amount){
+    public List<Account> overCertainBalance(List<Account> accounts, Double amount) {
+        if (accounts == null) {
+            throw new RuntimeException("List of accounts cannot be null");
+        }
+        if (amount == null) {
+            throw new RuntimeException("Amount cannot be null");
+        }
+
         return accounts.stream()
                 .filter(account -> account.getBalance() >= amount)
                 .toList();
@@ -28,7 +35,7 @@ public class AccountService {
                 .anyMatch(account -> account.getBirthday().isAfter(LocalDate.of(year, 1,1)));
     }
 
-    public double sumBalanceBeGender(List<Account> accounts, String gender){
+    public double sumBalanceByGender(List<Account> accounts, String gender){
         return accounts.stream()
                 .filter(account -> account.getGender().equals(gender))
                 .map(Account::getBalance)

@@ -1,5 +1,6 @@
 package homework1;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -10,26 +11,48 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AccountServiceTest {
-    AccountService accountService = new AccountService();
 
-    List<Account> accounts = List.of(
-            new Account("Pete", "Zet", "USA", LocalDate.of(1987, 3,12), 3600.00, "Male"),
-            new Account("Rose", "Love", "Canada", LocalDate.of(1990, 5,28), 13900.00, "Female"),
-            new Account("Grace", "Creek", "Great Britain", LocalDate.of(1999, 3,4), 600.00, "Female"),
-            new Account("Ron", "Smith", "Canada", LocalDate.of(1990, 5,21), 2400.00, "Male"),
-            new Account("Pride", "James", "Mexico", LocalDate.of(2000, 5,30), 10000.00, "Male"),
-            new Account("Hope", "Toronto", "USA", LocalDate.of(1979, 5,9), 5800.00, "Female"),
-            new Account("Liza", "Junior", "Great Britain", LocalDate.of(2000, 3,16), 1500.00, "Female")
-    );
+    AccountService accountService;
+    List<Account> accounts;
+
+    @BeforeEach
+    void setUp() {
+        accountService = new AccountService();
+
+        accounts = List.of(
+                new Account("Pete", "Zet", "USA", LocalDate.of(1987, 3, 12), 3600.00, "Male"),
+                new Account("Rose", "Love", "Canada", LocalDate.of(1990, 5, 28), 13900.00, "Female"),
+                new Account("Grace", "Creek", "Great Britain", LocalDate.of(1999, 3, 4), 600.00, "Female"),
+                new Account("Ron", "Smith", "Canada", LocalDate.of(1990, 5, 21), 2400.00, "Male"),
+                new Account("Pride", "James", "Mexico", LocalDate.of(2000, 5, 30), 10000.00, "Male"),
+                new Account("Hope", "Toronto", "USA", LocalDate.of(1979, 5, 9), 5800.00, "Female"),
+                new Account("Liza", "Junior", "Great Britain", LocalDate.of(2000, 3, 16), 1500.00, "Female")
+        );
+    }
 
     @Test
     void shouldOverCertainBalance() {
+        List<Account> expectedAccounts = List.of(
+                new Account("Rose", "Love", "Canada", LocalDate.of(1990, 5, 28), 13900.00, "Female"),
+                new Account("Pride", "James", "Mexico", LocalDate.of(2000, 5, 30), 10000.00, "Male"));
 
-    List<Account> expectedAccounts = List.of(
-            new Account("Rose", "Love", "Canada", LocalDate.of(1990, 5,28), 13900.00, "Female"),
-            new Account("Pride", "James", "Mexico", LocalDate.of(2000, 5,30), 10000.00, "Male"));
+        assertEquals(expectedAccounts, accountService.overCertainBalance(accounts, 10000.00));
+        assertNotNull(accountService.overCertainBalance(accounts, -1.0));
 
-            assertEquals(expectedAccounts,accountService.overCertainBalance(accounts, 10000.00));
+    }
+
+        @Test
+        void shouldOverCertainBalanceThrowExceptionAmountNull() {
+            Throwable exception = assertThrows(RuntimeException.class,
+                    () -> accountService.overCertainBalance(accounts, null));
+            assertEquals("Amount cannot be null", exception.getMessage());
+        }
+
+    @Test
+    void shouldOverCertainBalanceThrowExceptionAccountsNull() {
+        Throwable exception1 = assertThrows(RuntimeException.class,
+                () -> accountService.overCertainBalance(null, 10000.0));
+        assertEquals("List of accounts cannot be null", exception1.getMessage());
     }
 
     @Test
@@ -48,9 +71,10 @@ class AccountServiceTest {
     }
 
     @Test
-    void shouldSumBalanceBeGender() {
+    void shouldSumBalanceByGender() {
 
-        assertEquals(16000.00, accountService.sumBalanceBeGender(accounts, "Male"));
+        assertEquals(16000.00, accountService.sumBalanceByGender(accounts, "Male"));
+        assertEquals(21800.0, accountService.sumBalanceByGender(accounts, "Female"));
     }
 
     @Test
@@ -69,14 +93,17 @@ class AccountServiceTest {
                 new Account("Pride", "James", "Mexico", LocalDate.of(2000, 5,30), 10000.00, "Male"),
                 new Account("Hope", "Toronto", "USA", LocalDate.of(1979, 5,9), 5800.00, "Female")
         ));
-
-        assertEquals(map, accountService.groupingByMonthBirth(accounts));
+        Map<Month, List<Account>> result = accountService.groupingByMonthBirth(accounts);
+        assertEquals(map, result);
+        assertNotNull(result.entrySet());
+        assertEquals(result.entrySet().size(), 2);
     }
 
     @Test
     void shouldAverageBalanceByCountry() {
 
         assertEquals(4700.00, accountService.averageBalanceByCountry(accounts, "USA"));
+        assertEquals(0.0, accountService.averageBalanceByCountry(accounts, "Chili"));
     }
 
     @Test
