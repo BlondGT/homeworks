@@ -18,13 +18,7 @@ select title, year from cinema.movies
 where year in (2000, 2010, 2020);
 
 select title from cinema.movies
-where title like 'B%'
-union
-select title from cinema.movies
-where title like 'S%'
-union
-select title from cinema.movies
-where title like'P%';
+where title like 'B%' or title like 'S%' or title like 'P%';
 
 select distinct director from cinema.movies
 where year > 2005
