@@ -1,3 +1,6 @@
+package homework1;
+
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.util.Comparator;
@@ -9,7 +12,14 @@ import java.util.stream.Collectors;
 
 public class AccountService {
 
-    public List<Account> overCertainBalance (List<Account> accounts, double amount){
+    public List<Account> overCertainBalance(List<Account> accounts, Double amount) {
+        if (accounts == null) {
+            throw new RuntimeException("List of accounts cannot be null");
+        }
+        if (amount == null) {
+            throw new RuntimeException("Amount cannot be null");
+        }
+
         return accounts.stream()
                 .filter(account -> account.getBalance() >= amount)
                 .toList();
@@ -22,10 +32,10 @@ public class AccountService {
 
     public boolean youngerThanCertainYear(List<Account> accounts, int year){
         return accounts.stream()
-                .allMatch(account -> account.getBirthday().getYear() < year);
+                .anyMatch(account -> account.getBirthday().isAfter(LocalDate.of(year, 1,1)));
     }
 
-    public double sumBalanceBeGender(List<Account> accounts, String gender){
+    public double sumBalanceByGender(List<Account> accounts, String gender){
         return accounts.stream()
                 .filter(account -> account.getGender().equals(gender))
                 .map(Account::getBalance)
@@ -60,10 +70,10 @@ public class AccountService {
 
     public Optional<Account> oldestAccount(List<Account> accounts){
         return accounts.stream()
-                .max(Comparator.comparing(Account::getBirthday));
+                .min(Comparator.comparing(Account::getBirthday));
     }
 
-    public Map<Year, Double> sortingByPlaceAndBalance(List<Account> accounts){
+    public Map<Year, Double> sortingByYearBirthdayAndBalance(List<Account> accounts){
         return accounts.stream()
                 .collect(Collectors.groupingBy(account -> Year.of(account.getBirthday().getYear()),
                         Collectors.averagingDouble(Account::getBalance)));

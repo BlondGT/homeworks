@@ -1,3 +1,5 @@
+package homework1;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -109,30 +111,30 @@ public class Account {
         public Account build() {
             return new Account(firstName, lastName, country, birthday, balance, gender);
         }
+    }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Account account = (Account) o;
-            return Double.compare(account.balance, balance) == 0 && firstName.equals(account.firstName) && lastName.equals(account.lastName) && country.equals(account.country) && birthday.equals(account.birthday) && gender.equals(account.gender);
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return Double.compare(account.balance, balance) == 0 && firstName.equals(account.firstName) && lastName.equals(account.lastName) && country.equals(account.country) && birthday.equals(account.birthday) && gender.equals(account.gender);
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(firstName, lastName, country, birthday, balance, gender);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, country, birthday, balance, gender);
+    }
 
-        @Override
-        public String toString() {
-            return "Account{" +
-                    "firstName='" + firstName + '\'' +
-                    ", lastName='" + lastName + '\'' +
-                    ", country='" + country + '\'' +
-                    ", birthday=" + birthday +
-                    ", balance=" + balance +
-                    ", gender='" + gender + '\'' +
-                    '}';
-        }
+    @Override
+    public String toString() {
+        return "Account{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", country='" + country + '\'' +
+                ", birthday=" + birthday +
+                ", balance=" + balance +
+                ", gender='" + gender + '\'' +
+                '}';
     }
 }
