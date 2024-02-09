@@ -5,11 +5,21 @@ import java.util.Objects;
 
 public class Account {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String country;
     private LocalDate birthday;
     private double balance;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     private String gender;
 
     public String getFirstName() {
@@ -60,7 +70,8 @@ public class Account {
         this.gender = gender;
     }
 
-    public Account(String firstName, String lastName, String country, LocalDate birthday, double balance, String gender) {
+    public Account(Long id, String firstName, String lastName, String country, LocalDate birthday, double balance, String gender) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
@@ -71,12 +82,18 @@ public class Account {
 
     public static class Builder {
 
+        private Long id;
         private String firstName;
         private String lastName;
         private String country;
         private LocalDate birthday;
         private double balance;
         private String gender;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
         public Builder firstName(String firstName) {
             this.firstName = firstName;
@@ -109,7 +126,7 @@ public class Account {
         }
 
         public Account build() {
-            return new Account(firstName, lastName, country, birthday, balance, gender);
+            return new Account(id, firstName, lastName, country, birthday, balance, gender);
         }
     }
 
@@ -118,18 +135,19 @@ public class Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return Double.compare(account.balance, balance) == 0 && firstName.equals(account.firstName) && lastName.equals(account.lastName) && country.equals(account.country) && birthday.equals(account.birthday) && gender.equals(account.gender);
+        return Double.compare(account.balance, balance) == 0 && id.equals(account.id) && firstName.equals(account.firstName) && lastName.equals(account.lastName) && country.equals(account.country) && birthday.equals(account.birthday) && gender.equals(account.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, country, birthday, balance, gender);
+        return Objects.hash(id, firstName, lastName, country, birthday, balance, gender);
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", country='" + country + '\'' +
                 ", birthday=" + birthday +
