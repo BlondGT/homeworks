@@ -12,23 +12,21 @@ import java.util.List;
 public class AccountRestController {
 
     private final AccountService accountService;
-    private final List<Account> accounts;
     private  final AccountsRepository accountsRepository;
 
-    public AccountRestController(AccountService accountService, List<Account> accounts, AccountsRepository accountsRepository) {
+    public AccountRestController(AccountService accountService, AccountsRepository accountsRepository) {
         this.accountService = accountService;
-        this.accounts = accounts;
         this.accountsRepository = accountsRepository;
     }
 
     @RequestMapping(value = "/balance/{balanceAmount}", method = RequestMethod.GET)
     public List<Account> account(@PathVariable double balanceAmount) {
-        return accountService.overCertainBalance(accounts, balanceAmount);
+        return accountService.overCertainBalance(balanceAmount);
     }
 
     @RequestMapping(value = "/balance", method = RequestMethod.POST)
-    public double account(@RequestBody List<Account> inputAccounts) {
-        return accountService.sumBalanceByGender(inputAccounts, "Male");
+    public double account() {
+        return accountService.sumBalanceByGender("Male");
     }
 
     @GetMapping("/accounts")

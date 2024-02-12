@@ -1,7 +1,7 @@
-package homework1;
+package homework1.service;
 
 import homework1.model.Account;
-import homework1.service.AccountService;
+import homework1.repository.AccountsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,14 +12,14 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class AccountServiceTest {
 
     AccountService accountService;
     List<Account> accounts;
-
     @BeforeEach
     void setUp() {
-        accountService = new AccountService();
+        accountService = new AccountService(new AccountsRepository());
 
         accounts = List.of(
                 new Account(1L, "Pete", "Zet", "USA", LocalDate.of(1987, 3, 12), 3600.00, "Male"),
@@ -38,22 +38,22 @@ class AccountServiceTest {
                 new Account(2L, "Rose", "Love", "Canada", LocalDate.of(1990, 5, 28), 13900.00, "Female"),
                 new Account(5L, "Pride", "James", "Mexico", LocalDate.of(2000, 5, 30), 10000.00, "Male"));
 
-        assertEquals(expectedAccounts, accountService.overCertainBalance(accounts, 10000.00));
-        assertNotNull(accountService.overCertainBalance(accounts, -1.0));
+        assertEquals(expectedAccounts, accountService.overCertainBalance(10000.00));
+        assertNotNull(accountService.overCertainBalance(-1.0));
 
     }
 
         @Test
         void shouldOverCertainBalanceThrowExceptionAmountNull() {
             Throwable exception = assertThrows(RuntimeException.class,
-                    () -> accountService.overCertainBalance(accounts, null));
+                    () -> accountService.overCertainBalance(null));
             assertEquals("Amount cannot be null", exception.getMessage());
         }
 
     @Test
     void shouldOverCertainBalanceThrowExceptionAccountsNull() {
         Throwable exception1 = assertThrows(RuntimeException.class,
-                () -> accountService.overCertainBalance(null, 10000.0));
+                () -> accountService.overCertainBalance(10000.0));
         assertEquals("List of accounts cannot be null", exception1.getMessage());
     }
 
@@ -62,21 +62,21 @@ class AccountServiceTest {
 
         Set<String> countries = new HashSet<>(List.of("USA", "Canada", "Great Britain", "Mexico"));
 
-        assertEquals(countries, accountService.listCountries(accounts));
+        assertEquals(countries, accountService.listCountries());
     }
 
     @Test
     void shouldYoungerThanCertainYear() {
 
-        assertTrue(accountService.youngerThanCertainYear(accounts, 2000));
-        assertFalse(accountService.youngerThanCertainYear(accounts, 2006));
+        assertTrue(accountService.youngerThanCertainYear(2000));
+        assertFalse(accountService.youngerThanCertainYear(2006));
     }
 
     @Test
     void shouldSumBalanceByGender() {
 
-        assertEquals(16000.00, accountService.sumBalanceByGender(accounts, "Male"));
-        assertEquals(21800.0, accountService.sumBalanceByGender(accounts, "Female"));
+        assertEquals(16000.00, accountService.sumBalanceByGender("Male"));
+        assertEquals(21800.0, accountService.sumBalanceByGender("Female"));
     }
 
     @Test
@@ -95,7 +95,7 @@ class AccountServiceTest {
                 new Account(5L, "Pride", "James", "Mexico", LocalDate.of(2000, 5,30), 10000.00, "Male"),
                 new Account(6L ,"Hope", "Toronto", "USA", LocalDate.of(1979, 5,9), 5800.00, "Female")
         ));
-        Map<Month, List<Account>> result = accountService.groupingByMonthBirth(accounts);
+        Map<Month, List<Account>> result = accountService.groupingByMonthBirth();
         assertEquals(map, result);
         assertNotNull(result.entrySet());
         assertEquals(result.entrySet().size(), 2);
@@ -104,8 +104,8 @@ class AccountServiceTest {
     @Test
     void shouldAverageBalanceByCountry() {
 
-        assertEquals(4700.00, accountService.averageBalanceByCountry(accounts, "USA"));
-        assertEquals(0.0, accountService.averageBalanceByCountry(accounts, "Chili"));
+        assertEquals(4700.00, accountService.averageBalanceByCountry("USA"));
+        assertEquals(0.0, accountService.averageBalanceByCountry("Chili"));
     }
 
     @Test
@@ -143,7 +143,7 @@ class AccountServiceTest {
                 new Account(1L, "Pete", "Zet", "USA", LocalDate.of(1987, 3,12), 3600.00, "Male")
         );
 
-        assertEquals(expectedList, accountService.sortingByLastNameAndFirstName(accounts));
+        assertEquals(expectedList, accountService.sortingByLastNameAndFirstName());
     }
 
     @Test
@@ -151,7 +151,7 @@ class AccountServiceTest {
 
         Optional<Account> expectedAccount = Optional.of(new Account(6L, "Hope", "Toronto", "USA", LocalDate.of(1979, 5, 9), 5800.00, "Female"));
 
-        assertEquals(expectedAccount, accountService.oldestAccount(accounts));
+        assertEquals(expectedAccount, accountService.oldestAccount());
     }
 
     @Test
@@ -163,7 +163,7 @@ class AccountServiceTest {
         map.put(Year.of(1999), 600.0);
         map.put(Year.of(2000), 5750.0);
 
-        assertEquals(map, accountService.sortingByYearBirthdayAndBalance(accounts));
+        assertEquals(map, accountService.sortingByYearBirthdayAndBalance());
     }
 
     @Test
@@ -171,6 +171,6 @@ class AccountServiceTest {
 
         Optional<Account> expectedAccount = Optional.of(new Account(6L, "Hope", "Toronto", "USA", LocalDate.of(1979, 5, 9), 5800.00, "Female"));
 
-        assertEquals(expectedAccount, accountService.longestLastName(accounts));
+        assertEquals(expectedAccount, accountService.longestLastName());
     }
 }

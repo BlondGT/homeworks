@@ -1,5 +1,6 @@
 package homework1.repository;
 
+import homework1.exception.AccountNotFoundException;
 import homework1.model.Account;
 import org.springframework.stereotype.Repository;
 
@@ -20,12 +21,12 @@ public class AccountsRepository {
         return accounts;
     }
 
-    public Account getAccountById(Long id){
+    public Account getAccountById(Long id) throws AccountNotFoundException{
         return accounts.stream()
                 .filter(account -> account.getId().equals(id))
-                .findFirst()
-                .orElseThrow();
-    }
+                .findAny()
+                .orElseThrow(() -> new AccountNotFoundException("Account with id " + id + " not founded"));
+        }
 
     public void create(Account account){
         accounts.add(account);
@@ -47,14 +48,14 @@ public class AccountsRepository {
                 return;
             }
         }
-            throw new IllegalArgumentException("Account was not found");
+            throw new AccountNotFoundException("Account was not found");
     }
 
-    public boolean delete(Long id){
+    public void delete(Long id){
         Account accountDel = accounts.stream()
                 .filter(account -> Objects.equals(account.getId(), id))
                 .findAny()
                 .orElseThrow();
-       return accounts.remove(accountDel);
+        accounts.remove(accountDel);
     }
 }
