@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Repository
 public class AccountsRepository {
@@ -32,30 +31,16 @@ public class AccountsRepository {
         accounts.add(account);
     }
 
-    public Account read(Long id){
-        for(Account account : accounts){
-            if(Objects.equals(account.getId(), id))
-                return account;
-        }
-        return null;
-    }
-
     public void update(Long id, Account updateAccount) {
-        for (int i = 0; i < accounts.size(); i++) {
-            Account account = accounts.get(i);
-            if (Objects.equals(account.getId(), updateAccount.getId())) {
-                accounts.set(i, updateAccount);
-                return;
-            }
-        }
+        Account account = getAccountById(id);
+        if (account != null) {
+            account.setCountry(updateAccount.getCountry());
+        } else {
             throw new AccountNotFoundException("Account was not found");
+        }
     }
 
     public void delete(Long id){
-        Account accountDel = accounts.stream()
-                .filter(account -> Objects.equals(account.getId(), id))
-                .findAny()
-                .orElseThrow();
-        accounts.remove(accountDel);
+        accounts.remove(getAccountById(id));
     }
 }
