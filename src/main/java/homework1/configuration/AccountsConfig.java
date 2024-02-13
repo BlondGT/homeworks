@@ -15,6 +15,7 @@ public class AccountsConfig {
     public List<Account> accounts(){
         List<Account> accountList = new ArrayList<>();
         accountList.add(new Account(
+                1L,
                 "Pete",
                 "Zet",
                 "USA",
@@ -22,6 +23,7 @@ public class AccountsConfig {
                 3600.00,
                 "Male"));
         accountList.add(new Account(
+                2L,
                 "Rose",
                 "Love",
                 "Canada",
