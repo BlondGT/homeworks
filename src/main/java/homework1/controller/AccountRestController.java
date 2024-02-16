@@ -6,6 +6,7 @@ import homework1.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/account")
@@ -35,7 +36,7 @@ public class AccountRestController {
     }
 
     @GetMapping("/accounts/{id}")
-    public Account getAccountById(@PathVariable("id") Long accountId) {
+    public Optional<Account> getAccountById(@PathVariable("id") Long accountId) {
         return accountsRepository.getAccountById(accountId);
     }
 
