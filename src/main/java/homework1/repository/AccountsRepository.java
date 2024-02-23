@@ -2,45 +2,57 @@ package homework1.repository;
 
 import homework1.exception.AccountNotFoundException;
 import homework1.model.Account;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AccountsRepository {
 
-    private final List<Account> accounts;
+   private final SessionFactory sessionFactory;
 
-    public AccountsRepository() {
-        this.accounts = new ArrayList<>();
+    public AccountsRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     public List<Account> findAll(){
-        return accounts;
+        try(Session session = sessionFactory.openSession()){
+           return session.createQuery("FROM Account", Account.class).list();
+        }
     }
 
-    public Account getAccountById(Long id) throws AccountNotFoundException{
-        return accounts.stream()
-                .filter(account -> account.getId().equals(id))
-                .findAny()
-                .orElseThrow(() -> new AccountNotFoundException("Account with id " + id + " not founded"));
+    public Optional<Account> getAccountById(Long id) throws AccountNotFoundException {
+        Account account;
+        try (Session session = sessionFactory.openSession()) {
+            account = session.get(Account.class, id);
         }
+        return Optional.ofNullable(account);
+    }
 
-    public void create(Account account){
-        accounts.add(account);
+
+        public void create(Account account){
+        try(Session session = sessionFactory.openSession()){
+            session.save(account);
+        }
     }
 
     public void update(Long id, Account updateAccount) {
-        Account account = getAccountById(id);
-        if (account != null) {
-            account.setCountry(updateAccount.getCountry());
-        } else {
-            throw new AccountNotFoundException("Account was not found");
+        Optional<Account> account = getAccountById(id);
+        try(Session session = sessionFactory.openSession()) {
+            if (account.isPresent()) {
+                Account gettingAccount = account.get();
+                gettingAccount.setCountry(updateAccount.getCountry());
+                session.update(gettingAccount);
+            }
         }
     }
 
     public void delete(Long id){
-        accounts.remove(getAccountById(id));
+        Optional<Account> account = getAccountById(id);
+        try(Session session = sessionFactory.openSession()){
+            session.delete(account);
+        }
     }
 }
